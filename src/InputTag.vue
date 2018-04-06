@@ -105,13 +105,14 @@ export default {
         e.preventDefault()
       }
 
-      if (
-        this.newTag &&
-        this.innerTags.indexOf(this.newTag) === -1 &&
-        this.validateIfNeeded(this.newTag)
-      ) {
-        this.innerTags.push(this.newTag)
-        this.newTag = ''
+      const trimmed = this.newTag.trim()
+
+      if (trimmed === '' || !this.validateIfNeeded(trimmed))
+        return
+
+      this.newTag = ''
+      if (this.innerTags.indexOf(trimmed) === -1) {
+        this.innerTags.push(trimmed)
         this.tagChange()
       }
     },

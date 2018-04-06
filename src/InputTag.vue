@@ -152,7 +152,7 @@ export default {
       <span>{{ tag }}</span>
       <a v-if="!readOnly" @click.prevent.stop="remove(index)" class="remove"></a>
     </span>
-    <input
+    <textarea
       v-if                     = "!readOnly && !isLimit"
       ref                      = "inputtag"
       :placeholder             = "placeholder"

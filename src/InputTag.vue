@@ -60,7 +60,7 @@ export default {
   },
 
   watch: {
-    newTag: function(val, old) {
+    newTag: function (val, old) {
       if (this.splitExp === '' || this.splitExp === undefined || this.splitExp.test === undefined) {
         this.newTag = val
         return
@@ -69,8 +69,9 @@ export default {
       this.newTag = splitted.pop()
       splitted.forEach((elem) => {
         const trimmed = elem.trim()
-        if (trimmed == '' || !this.validateIfNeeded(trimmed))
+        if (trimmed === '' || !this.validateIfNeeded(trimmed)) {
           return
+        }
         this.innerTags.push(trimmed)
       })
       this.tagChange()
@@ -107,8 +108,9 @@ export default {
 
       const trimmed = this.newTag.trim()
 
-      if (trimmed === '' || !this.validateIfNeeded(trimmed))
+      if (trimmed === '' || !this.validateIfNeeded(trimmed)) {
         return
+      }
 
       this.newTag = ''
       if (this.innerTags.indexOf(trimmed) === -1) {

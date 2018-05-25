@@ -164,6 +164,7 @@ export default {
       v-on:keydown             = "addNew"
       v-on:blur                = "addNew"
       class                    = "new-tag"
+      data-enable-grammarly    = "false"
     />
   </div>
 </template>

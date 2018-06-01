@@ -96,7 +96,7 @@ export default {
     addNew (e) {
       // Do nothing if the current key code is
       // not within those defined within the addTagOnKeys prop array.
-      if ((e && this.addTagOnKeys.indexOf(e.keyCode) === -1 &&
+      if ((e && this.addTagOnKeys.indexOf(e.key) === -1 &&
               (e.type !== 'blur' || !this.addTagOnBlur)) || this.isLimit) {
         return
       }

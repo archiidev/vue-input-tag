@@ -33,9 +33,9 @@ export default {
       type: Array,
       default: function () {
         return [
-          13, // Return
-          188, // Comma ','
-          9 // Tab
+          "Enter", 
+          ",", 
+          ";"
         ]
       }
     },

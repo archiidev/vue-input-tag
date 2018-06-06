@@ -57,11 +57,12 @@ export default {
 
   watch: {
     newTag: function (val, old) {
+      var regex = RegExp(this.splitExp)
       if (this.splitExp === '' || this.splitExp === undefined || this.splitExp.test === undefined) {
         this.newTag = val
         return
       }
-      var splitted = this.newTag.split(this.splitExp)
+      var splitted = this.newTag.split(regex)
       this.newTag = splitted.pop()
       splitted.forEach((elem) => {
         const trimmed = elem.trim()

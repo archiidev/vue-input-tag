@@ -58,7 +58,7 @@ export default {
   watch: {
     newTag: function (val, old) {
       var regex = RegExp(this.splitExp)
-      if (this.splitExp === '' || this.splitExp === undefined || this.splitExp.test === undefined) {
+      if (this.splitExp === '' || this.splitExp === undefined || regex.test === undefined) {
         this.newTag = val
         return
       }

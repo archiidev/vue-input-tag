@@ -40,8 +40,10 @@ export default {
       default: false
     },
     splitExp: {
-      type: String | Object,
-      default: ''
+      type: RegExp,
+      default: function () {
+        return new RegExp(',|;|(?:\\n\\r)|(?:\\n)')
+      }
     },
     limit: {
       default: -1
@@ -57,16 +59,11 @@ export default {
 
   watch: {
     newTag: function (val, old) {
-      if (this.splitExp === '' || this.splitExp === undefined) {
+      if (this.splitExp === '' || this.splitExp === undefined || this.splitExp.test === undefined) {
         this.newTag = val
         return
       }
-      var regex = RegExp(this.splitExp)
-      if (regex.test === undefined) {
-        this.newTag = val
-        return
-      }
-      var splitted = this.newTag.split(regex)
+      var splitted = this.newTag.split(this.splitExp)
       this.newTag = splitted.pop()
       splitted.forEach((elem) => {
         const trimmed = elem.trim()

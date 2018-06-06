@@ -39,7 +39,7 @@ export default {
       type: Boolean,
       default: false
     },
-    splitExp: {
+    regexForSplittingWhenPasting: {
       type: RegExp,
       default: function () {
         return new RegExp(',|;|(?:\\n\\r)|(?:\\n)')
@@ -59,11 +59,11 @@ export default {
 
   watch: {
     newTag: function (val, old) {
-      if (this.splitExp === '' || this.splitExp === undefined || this.splitExp.test === undefined) {
+      if (this.regexForSplittingWhenPasting === '' || this.regexForSplittingWhenPasting === undefined || this.regexForSplittingWhenPasting.test === undefined) {
         this.newTag = val
         return
       }
-      var splitted = this.newTag.split(this.splitExp)
+      var splitted = this.newTag.split(this.regexForSplittingWhenPasting)
       this.newTag = splitted.pop()
       splitted.forEach((elem) => {
         const trimmed = elem.trim()

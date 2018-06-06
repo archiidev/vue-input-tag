@@ -32,7 +32,7 @@ export default {
     addTagOnKeys: {
       type: Array,
       default: function () {
-        return ['Enter',';',',']
+        return ['Enter', ';', ',']
       }
     },
     addTagOnBlur: {

@@ -43,6 +43,10 @@ export default {
       type: Boolean,
       default: false
     },
+    splitExp: {
+      type: String | Object,
+      default: ''
+    },
     limit: {
       default: -1
     }
@@ -56,6 +60,22 @@ export default {
   },
 
   watch: {
+    newTag: function (val, old) {
+      if (this.splitExp === '' || this.splitExp === undefined || this.splitExp.test === undefined) {
+        this.newTag = val
+        return
+      }
+      var splitted = this.newTag.split(this.splitExp)
+      this.newTag = splitted.pop()
+      splitted.forEach((elem) => {
+        const trimmed = elem.trim()
+        if (trimmed === '' || !this.validateIfNeeded(trimmed)) {
+          return
+        }
+        this.innerTags.push(trimmed)
+      })
+      this.tagChange()
+    },
     tags () {
       this.innerTags = [...this.tags]
     }
@@ -86,13 +106,15 @@ export default {
         e.preventDefault()
       }
 
-      if (
-        this.newTag &&
-        this.innerTags.indexOf(this.newTag) === -1 &&
-        this.validateIfNeeded(this.newTag)
-      ) {
-        this.innerTags.push(this.newTag)
-        this.newTag = ''
+      const trimmed = this.newTag.trim()
+
+      if (trimmed === '' || !this.validateIfNeeded(trimmed)) {
+        return
+      }
+
+      this.newTag = ''
+      if (this.innerTags.indexOf(trimmed) === -1) {
+        this.innerTags.push(trimmed)
         this.tagChange()
       }
     },
@@ -132,7 +154,7 @@ export default {
       <span>{{ tag }}</span>
       <a v-if="!readOnly" @click.prevent.stop="remove(index)" class="remove"></a>
     </span>
-    <input
+    <textarea
       v-if                     = "!readOnly && !isLimit"
       ref                      = "inputtag"
       :placeholder             = "placeholder"

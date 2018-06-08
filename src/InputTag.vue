@@ -32,7 +32,7 @@ export default {
     addTagOnKeys: {
       type: Array,
       default: function () {
-        return ['Enter', ';', ',']
+        return ['Enter', ';', ',', 'Tab']
       }
     },
     addTagOnBlur: {
@@ -42,7 +42,7 @@ export default {
     regexForSplittingWhenPasting: {
       type: RegExp,
       default: function () {
-        return new RegExp(',|;|(\\n\\r)|(\\n)')
+        return new RegExp(',|;|\\n\\r|\\n|\\t')
       }
     },
     limit: {

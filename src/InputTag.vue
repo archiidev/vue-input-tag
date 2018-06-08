@@ -42,7 +42,7 @@ export default {
     regexForSplittingWhenPasting: {
       type: RegExp,
       default: function () {
-        return new RegExp(',|;|(?:\\n\\r)|(?:\\n)')
+        return new RegExp(',|;|(\\n\\r)|(\\n)')
       }
     },
     limit: {

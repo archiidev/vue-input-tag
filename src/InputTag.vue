@@ -32,20 +32,18 @@ export default {
     addTagOnKeys: {
       type: Array,
       default: function () {
-        return [
-          13, // Return
-          188, // Comma ','
-          9 // Tab
-        ]
+        return ['Enter', ';', ',', 'Tab']
       }
     },
     addTagOnBlur: {
       type: Boolean,
       default: false
     },
-    splitExp: {
-      type: String | Object,
-      default: ''
+    regexForSplittingWhenPasting: {
+      type: RegExp,
+      default: function () {
+        return new RegExp(',|;|\\n\\r|\\n|\\t')
+      }
     },
     limit: {
       default: -1
@@ -61,11 +59,13 @@ export default {
 
   watch: {
     newTag: function (val, old) {
-      if (this.splitExp === '' || this.splitExp === undefined || this.splitExp.test === undefined) {
+      if (this.regexForSplittingWhenPasting === '' ||
+            this.regexForSplittingWhenPasting === undefined ||
+            this.regexForSplittingWhenPasting.test === undefined) {
         this.newTag = val
         return
       }
-      var splitted = this.newTag.split(this.splitExp)
+      var splitted = this.newTag.split(this.regexForSplittingWhenPasting)
       this.newTag = splitted.pop()
       splitted.forEach((elem) => {
         const trimmed = elem.trim()
@@ -96,7 +96,7 @@ export default {
     addNew (e) {
       // Do nothing if the current key code is
       // not within those defined within the addTagOnKeys prop array.
-      if ((e && this.addTagOnKeys.indexOf(e.keyCode) === -1 &&
+      if ((e && !this.addTagOnKeys.includes(e.key) &&
               (e.type !== 'blur' || !this.addTagOnBlur)) || this.isLimit) {
         return
       }
@@ -113,7 +113,7 @@ export default {
       }
 
       this.newTag = ''
-      if (this.innerTags.indexOf(trimmed) === -1) {
+      if (!this.innerTags.includes(trimmed)) {
         this.innerTags.push(trimmed)
         this.tagChange()
       }
@@ -122,7 +122,7 @@ export default {
     validateIfNeeded (tagValue) {
       if (this.validate === '' || this.validate === undefined) {
         return true
-      } else if (typeof (this.validate) === 'string' && Object.keys(validators).indexOf(this.validate) > -1) {
+      } else if (typeof (this.validate) === 'string' && Object.keys(validators).includes(this.validate)) {
         return validators[this.validate].test(tagValue)
       } else if (typeof (this.validate) === 'object' && this.validate.test !== undefined) {
         return this.validate.test(tagValue)

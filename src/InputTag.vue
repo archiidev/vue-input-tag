@@ -17,6 +17,10 @@ export default {
       type: Array,
       default: () => []
     },
+    lockedTags: {
+      type: Array,
+      default: () => []
+    },
     placeholder: {
       type: String,
       default: ''
@@ -92,6 +96,11 @@ export default {
   },
 
   methods: {
+
+    isLocked (index) {
+      return this.lockedTags.includes(this.innerTags[index])
+    },
+
     focusNewTag () {
       if (this.readOnly || !this.$el.querySelector('.new-tag')) { return }
       this.$el.querySelector('.new-tag').focus()
@@ -145,12 +154,18 @@ export default {
     },
 
     remove (index) {
+      if (this.isLocked(index)) {
+        return
+      }
       this.innerTags.splice(index, 1)
       this.tagChange()
     },
 
     removeLastTag () {
       if (this.newTag) { return }
+      if (this.innerTags.length === 0 || this.isLocked(this.innerTags.length - 1)) {
+        return
+      }
       this.innerTags.pop()
       this.tagChange()
     },
@@ -164,9 +179,9 @@ export default {
 
 <template>
   <div @click="focusNewTag()" :class="{'read-only': readOnly}" class="vue-input-tag-wrapper">
-    <span v-for="(tag, index) in innerTags" :key="index" class="input-tag">
+    <span v-for="(tag, index) in innerTags" :key="index" class="input-tag" v-bind:class="{ locked: isLocked(index) }">
       <span>{{ tag }}</span>
-      <a v-if="!readOnly" @click.prevent.stop="remove(index)" class="remove"></a>
+      <a v-if="!readOnly && !isLocked(index)" @click.prevent.stop="remove(index)" class="remove"></a>
     </span>
     <textarea
       v-if                     = "!readOnly && !isLimit"

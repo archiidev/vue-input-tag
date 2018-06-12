@@ -45,6 +45,10 @@ export default {
         return new RegExp(',|;|\\n\\r|\\n|\\t')
       }
     },
+    caseSensitive: {
+      type: Boolean,
+      default: false
+    },
     limit: {
       default: -1
     }
@@ -72,9 +76,7 @@ export default {
         if (trimmed === '' || !this.validateIfNeeded(trimmed)) {
           return
         }
-        if (!this.innerTags.includes(trimmed)) {
-          this.innerTags.push(trimmed)
-        }
+        this.addTag(trimmed)
       })
       this.tagChange()
     },
@@ -95,7 +97,7 @@ export default {
       this.$el.querySelector('.new-tag').focus()
     },
 
-    addNew (e) {
+    onAddEvent (e) {
       // Do nothing if the current key code is
       // not within those defined within the addTagOnKeys prop array.
       if ((e && !this.addTagOnKeys.includes(e.key) &&
@@ -115,9 +117,19 @@ export default {
       }
 
       this.newTag = ''
-      if (!this.innerTags.includes(trimmed)) {
-        this.innerTags.push(trimmed)
-        this.tagChange()
+      this.addTag(trimmed)
+      this.tagChange()
+    },
+
+    addTag (tag, sync) {
+      const hasTag = this.innerTags.some((t) => {
+        if (this.caseSensitive) {
+          return t === tag
+        }
+        return t.toLowerCase() === tag.toLowerCase()
+      })
+      if (!hasTag) {
+        this.innerTags.push(tag)
       }
     },
 
@@ -163,8 +175,8 @@ export default {
       type                     = "text"
       v-model                  = "newTag"
       v-on:keydown.delete.stop = "removeLastTag"
-      v-on:keydown             = "addNew"
-      v-on:blur                = "addNew"
+      v-on:keydown             = "onAddEvent"
+      v-on:blur                = "onAddEvent"
       class                    = "new-tag"
     />
   </div>

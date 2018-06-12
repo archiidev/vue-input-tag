@@ -72,7 +72,9 @@ export default {
         if (trimmed === '' || !this.validateIfNeeded(trimmed)) {
           return
         }
-        this.innerTags.push(trimmed)
+        if (!this.innerTags.includes(trimmed)) {
+          this.innerTags.push(trimmed)
+        }
       })
       this.tagChange()
     },

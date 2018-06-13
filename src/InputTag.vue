@@ -134,7 +134,7 @@ export default {
       this.tagChange()
     },
 
-    addTag (tag, sync) {
+    addTag (tag) {
       const hasTag = !this.allowDuplicates && this.innerTags.some((t) => {
         if (this.caseSensitive) {
           return t === tag

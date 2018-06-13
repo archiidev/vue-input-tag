@@ -49,6 +49,10 @@ export default {
         return new RegExp(',|;|\\n\\r|\\n|\\t')
       }
     },
+    allowDuplicates: {
+      type: Boolean,
+      default: false
+    },
     caseSensitive: {
       type: Boolean,
       default: false
@@ -131,7 +135,7 @@ export default {
     },
 
     addTag (tag, sync) {
-      const hasTag = this.innerTags.some((t) => {
+      const hasTag = !this.allowDuplicates && this.innerTags.some((t) => {
         if (this.caseSensitive) {
           return t === tag
         }
